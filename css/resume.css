@@ -6,7 +6,7 @@
 body {
   font-family: "Open Sans", serif;
   padding-top: 54px;
-  color: #1A1A1D;
+  color: #1a1a1d;
 }
 
 @media (min-width: 992px) {
@@ -17,7 +17,7 @@ body {
 }
 
 p {
-  font-size: 20px; 
+  font-size: 20px;
   line-height: 1.6; /* Optional: Adjust line spacing for better readability */
 }
 
@@ -142,7 +142,7 @@ section.resume-section .resume-item .resume-date {
 }
 
 .text-primary {
-  color: #B03052 !important;
+  color: #b03052 !important;
 }
 
 a {
@@ -172,41 +172,50 @@ a:active {
   justify-content: center;
   align-items: center;
 }
-#about{
-  background: linear-gradient(rgb(255, 255, 255,0.9), rgba(255, 255, 255, 0.9)), url('../img/ab.jpg') no-repeat;
+#about {
+  background: linear-gradient(rgb(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)),
+    url("../img/ab.jpg") no-repeat;
   background-size: cover;
   background-position: center;
   background-position: fixed;
 }
-#experience{
-  background: linear-gradient(rgb(255, 255, 255,0.9), rgba(255, 255, 255, 0.9)), url('../img/ex.jpg') no-repeat;
+#experience {
+  background: linear-gradient(rgb(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)),
+    url("../img/ex.jpg") no-repeat;
   background-size: cover;
   background-position: center;
 }
-#projects{
-  background: linear-gradient(rgb(255, 255, 255,0.8), rgba(255, 255, 255,0.98)), url('../img/pp.jpg') no-repeat;
+#projects {
+  background: linear-gradient(
+      rgb(255, 255, 255, 0.8),
+      rgba(255, 255, 255, 0.98)
+    ),
+    url("../img/pp.jpg") no-repeat;
   background-size: cover;
   background-position: center;
 }
-#education{
-  background: linear-gradient(rgb(255, 255, 255,0.7), rgba(255, 255, 255, 0.9)), url('../img/edu.jpg') no-repeat;
+#education {
+  background: linear-gradient(rgb(255, 255, 255, 0.7), rgba(255, 255, 255, 0.9)),
+    url("../img/edu.jpg") no-repeat;
   background-size: cover;
   background-position: center;
 }
-#skills{
-  background: linear-gradient(rgb(255, 255, 255,0.9), rgba(255, 255, 255, 0.7)), url('') no-repeat;
+#skills {
+  background: linear-gradient(rgb(255, 255, 255, 0.9), rgba(255, 255, 255, 0.7)),
+    url("") no-repeat;
   background-size: cover;
   background-position: center;
 }
 
-#interests{
-  background: linear-gradient(rgb(255, 255, 255,0.9), rgba(255, 255, 255, 0.9)), url('../img/bg.jpg') no-repeat;
+#interests {
+  background: linear-gradient(rgb(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)),
+    url("../img/bg.jpg") no-repeat;
   background-size: cover;
   background-position: center;
 }
 
-.skills-wrapper{
- margin-top: 30px;
+.skills-wrapper {
+  margin-top: 30px;
 }
 
 .container {
@@ -215,6 +224,7 @@ a:active {
   gap: 20px;
   padding: 0;
   max-width: 1200px;
+  margin: 0;
 }
 
 .card {
@@ -224,12 +234,10 @@ a:active {
   overflow: hidden;
   padding: 20px;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  
 }
 
 .card:hover {
   transform: translateY(-5px);
-
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 }
 
@@ -237,16 +245,33 @@ a:active {
   width: 140px;
   /* height: 140px; */
   border-radius: 12px;
-
 }
 
 .card-content {
   padding: 20px 0;
 }
 
+@media (max-width: 768px) {
+  .container {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 10px;
+  }
+  .card {
+    text-align: center;
+    align-items: center;
+    padding: 10px;
+  }
+  .card-content {
+    font-size: 12px;
+    h3 {
+      font-size: 14px;
+    }
+  }
+}
+
 .category {
   display: inline-block;
-  background-color: #99BC85;
+  background-color: #99bc85;
   color: white;
   font-size: 14px;
   font-weight: bold;
@@ -254,7 +279,7 @@ a:active {
   border-radius: 5px;
   margin-bottom: 10px;
 }
-.category:hover{
+.category:hover {
   background-color: #343a40;
 }
 
@@ -283,7 +308,6 @@ h3 {
 }
 
 .faq-container {
- 
   overflow: hidden;
 }
 .faq-item {
@@ -309,7 +333,21 @@ h3 {
 .faq-item.active .faq-content {
   display: block;
 }
-.wb{
-  color: #B03052;
+.wb {
+  color: #b03052;
   margin-top: 40px;
+}
+
+.mb-h2 {
+  margin-bottom: 3rem;
+}
+
+@media (max-width: 768px) {
+  h1 {
+    font-size: 5rem;
+  }
+  .mb-h2 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+  }
 }
