@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Minoshi Perera | Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #e8f4f8 0%, #d6eaf8 40%, #e8daef 100%);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Inter', sans-serif;
+      padding: 2rem 1rem;
+    }
+
+    /* ── CARD SHELL ── */
+    .card {
+      background: #fff;
+      border-radius: 28px;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.10), 0 2px 8px rgba(0,0,0,0.06);
+      max-width: 440px; width: 100%;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* ── PANELS ── */
+    .panel { display: none; width: 100%; }
+    .panel.active { display: block; }
+
+    /* ── HOME PANEL ── */
+    #home { padding: 2.5rem 2rem 2rem; text-align: center; }
+
+    .avatar-wrapper { display: flex; justify-content: center; margin-bottom: 1.3rem; }
+    .avatar-ring {
+      width: 150px; height: 150px; border-radius: 50%;
+      padding: 4px;
+      background: linear-gradient(135deg, #5dade2, #a29bfe);
+    }
+    .avatar-img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; display: block; }
+    .avatar-placeholder {
+      width: 100%; height: 100%; border-radius: 50%;
+      background: linear-gradient(135deg, #85c1e9, #c39bd3);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2.2rem; font-weight: 700; color: #fff;
+    }
+
+    .name {
+      font-family: serif;
+      font-size: 1.2rem; color: #1a2535; margin-bottom: 0.3rem;
+    }
+    .role { font-size: 0.9rem; color: #6b7a99; font-weight: 500; margin-bottom: 0.6rem; line-height: 1.5; }
+
+    .intro {font-size: 0.7rem; color: #6b7a99; font-weight: 300; margin-bottom: 1.1rem;}
+
+    /* nav buttons grid */
+    .nav-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 1.6rem; }
+
+    .nav-btn {
+      background: #f7f9fc;
+      border: 1.5px solid #eaecf4;
+      border-radius: 16px;
+      padding: 0.95rem 0.5rem 0.8rem;
+      cursor: pointer;
+      display: flex; flex-direction: column; align-items: center; gap: 7px;
+      transition: border-color 0.2s, transform 0.15s, box-shadow 0.15s;
+      text-decoration: none;
+    }
+    .nav-btn:hover { transform: translateY(-3px); box-shadow: 0 6px 18px rgba(0,0,0,0.09); }
+
+    .nav-btn.edu  { border-color: #c5eede; } .nav-btn.edu:hover  { border-color: #2ecc9a; }
+    .nav-btn.exp  { border-color: #dbd6fb; } .nav-btn.exp:hover  { border-color: #a29bfe; }
+    .nav-btn.proj { border-color: #cde8f7; } .nav-btn.proj:hover { border-color: #5dade2; }
+
+    .nav-icon {
+      width: 42px; height: 42px; border-radius: 13px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .nav-icon svg { width: 21px; height: 21px; }
+    .nav-btn.edu  .nav-icon { background: #e5f9f2; color: #1aab7c; }
+    .nav-btn.exp  .nav-icon { background: #f0eeff; color: #7c74e8; }
+    .nav-btn.proj .nav-icon { background: #e8f4fc; color: #2e9fd3; }
+
+    .nav-label { font-size: 0.8rem; font-weight: 700; color: #1a2535; }
+
+    .divider { width: 40px; height: 2px; background: linear-gradient(90deg,#5dade2,#c39bd3); border-radius:2px; margin: 0 auto 1.2rem; }
+
+    .contact-info { display: flex; flex-direction: column; gap: 0.5rem; align-items: center; }
+    .contact-row  { display: flex; align-items: center; gap: 0.5rem; font-size: 0.87rem; color: #4a5568; }
+
+    .skills-section { margin-top: 1.6rem; padding-top: 1.4rem; border-top: 1px solid #f0f2f8; }
+    .skills-label   { font-size: 0.72rem; font-weight: 700; letter-spacing: 1.4px; text-transform: uppercase; color: #9aa5be; margin-bottom: 0.75rem; }
+    .tags { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
+    .tag  { background: #eef2fb; color: #3d5a99; font-size: 0.76rem; font-weight: 600; padding: 0.28rem 0.7rem; border-radius: 50px; }
+
+    /* ── INNER PANELS ── */
+    .inner-panel { padding: 0; animation: slideUp 0.28s ease; }
+    @keyframes slideUp { from { opacity:0; transform: translateY(18px); } to { opacity:1; transform: translateY(0); } }
+
+    .panel-top {
+      display: flex; align-items: center; gap: 12px;
+      padding: 1.4rem 1.5rem 1.2rem;
+      border-bottom: 1px solid #f0f2f8;
+      position: sticky; top: 0; background: #fff; z-index: 1;
+      border-radius: 28px 28px 0 0;
+    }
+    .back-btn {
+      width: 34px; height: 34px; border-radius: 10px;
+      background: #f2f4f8; border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; transition: background 0.15s;
+    }
+    .back-btn:hover { background: #e3e8f5; }
+    .back-btn svg { width: 17px; height: 17px; color: #3d5a99; }
+    .panel-header-icon {
+      width: 40px; height: 40px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .panel-header-icon svg { width: 20px; height: 20px; }
+    .ic-edu  { background: #e5f9f2; color: #1aab7c; }
+    .ic-exp  { background: #f0eeff; color: #7c74e8; }
+    .ic-proj { background: #e8f4fc; color: #2e9fd3; }
+    .panel-title    { font-family: 'Playfair Display', serif; font-size: 1.15rem; color: #1a2535; line-height: 1.2; }
+    .panel-subtitle { font-size: 0.76rem; color: #8a93aa; margin-top: 1px; }
+
+    .panel-body { padding: 1.3rem 1.5rem 1.8rem; max-height: 70vh; overflow-y: auto; }
+    .panel-body::-webkit-scrollbar { width: 4px; }
+    .panel-body::-webkit-scrollbar-thumb { background: #d0d5e8; border-radius: 4px; }
+
+    /* ── EDUCATION ── */
+    .edu-list { display: flex; flex-direction: column; gap: 12px; }
+    .edu-card {
+      background: #f9fafc; border-radius: 14px; padding: 1rem 1.1rem;
+      border-left: 3px solid #2ecc9a;
+      display: flex; gap: 12px; align-items: flex-start;
+    }
+    .edu-flag { font-size: 1.5rem; flex-shrink: 0; line-height: 1; margin-top: 2px; }
+    .edu-degree { font-size: 0.9rem; font-weight: 700; color: #1a2535; line-height: 1.35; margin-bottom: 3px; }
+    .edu-school { font-size: 0.8rem; color: #5b6a8a; font-weight: 600; margin-bottom: 5px; }
+    .edu-pills  { display: flex; flex-wrap: wrap; gap: 6px; }
+    .pill {
+      font-size: 0.7rem; font-weight: 700; padding: 2px 9px; border-radius: 50px;
+    }
+    .pill-current { background: #e5f9f2; color: #1aab7c; }
+    .pill-done    { background: #f0eeff; color: #7c74e8; }
+    .pill-loc     { background: #f2f4f8; color: #6b7a99; }
+
+    .research-box {
+      background: #f0eeff; border-radius: 12px; padding: 0.9rem 1rem;
+      margin-top: 14px;
+    }
+    .research-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: #9aa5be; margin-bottom: 6px; }
+    .research-item  { font-size: 0.82rem; color: #3d3a70; font-weight: 600; margin-bottom: 3px; }
+    .research-sub   { font-size: 0.75rem; color: #7c74e8; }
+
+    /* ── EXPERIENCE ── */
+    .job-list { display: flex; flex-direction: column; gap: 12px; }
+    .job-card {
+      background: #f9fafc; border-radius: 14px; padding: 1rem 1.1rem;
+      border-left: 3px solid #a29bfe;
+    }
+    .job-card.banking { border-left-color: #5dade2; }
+    .job-card.telco   { border-left-color: #2ecc9a; }
+    .job-card.b2b     { border-left-color: #f39c12; }
+    .job-card.intern  { border-left-color: #e74c3c; }
+
+    .job-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 6px; margin-bottom: 4px; }
+    .job-title { font-size: 0.88rem; font-weight: 700; color: #1a2535; line-height: 1.35; }
+    .job-badge { font-size: 0.68rem; font-weight: 700; padding: 2px 8px; border-radius: 50px; white-space: nowrap; flex-shrink: 0; }
+    .b-intern  { background: #fdecea; color: #c0392b; }
+    .b-banking { background: #e8f4fc; color: #1a7db5; }
+    .b-telco   { background: #e5f9f2; color: #1aab7c; }
+    .b-b2b     { background: #fef5e7; color: #d68910; }
+    .job-meta  { font-size: 0.75rem; color: #8a93aa; margin-bottom: 7px; }
+    .job-bullets { padding-left: 1rem; }
+    .job-bullets li { font-size: 0.81rem; color: #4a5568; line-height: 1.6; margin-bottom: 3px; }
+
+    /* ── PROJECTS ── */
+    .proj-section-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 1.3px; text-transform: uppercase; color: #9aa5be; margin: 14px 0 8px; }
+    .proj-section-label:first-child { margin-top: 0; }
+
+    .proj-card {
+      background: #f9fafc; border-radius: 14px; padding: 1rem 1.1rem;
+      border-left: 3px solid #5dade2; margin-bottom: 10px;
+      display: flex; gap: 10px; align-items: flex-start;
+    }
+    .proj-card.purple { border-left-color: #a29bfe; }
+    .proj-card.green  { border-left-color: #2ecc9a; }
+
+    .proj-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .proj-icon svg { width: 17px; height: 17px; }
+    .pi-blue   { background: #e8f4fc; color: #2e9fd3; }
+    .pi-purple { background: #f0eeff; color: #7c74e8; }
+    .pi-green  { background: #e5f9f2; color: #1aab7c; }
+
+    .proj-title { font-size: 0.86rem; font-weight: 700; color: #1a2535; margin-bottom: 3px; }
+    .proj-desc  { font-size: 0.78rem; color: #5b6a8a; line-height: 1.55; margin-bottom: 6px; }
+    .proj-tags  { display: flex; flex-wrap: wrap; gap: 5px; }
+    .ptag { font-size: 0.69rem; font-weight: 600; padding: 2px 7px; border-radius: 50px; background: #eef2fb; color: #3d5a99; }
+
+    .client-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .client-card {
+      background: #f9fafc; border-radius: 12px; padding: 0.85rem 0.9rem;
+      border: 1.5px solid #eaecf4;
+    }
+    .client-name   { font-size: 0.82rem; font-weight: 700; color: #1a2535; margin-bottom: 3px; }
+    .client-type-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+    .client-type   { font-size: 0.67rem; font-weight: 700; padding: 2px 7px; border-radius: 50px; }
+    .ct-web    { background: #e8f4fc; color: #1a7db5; }
+    .ct-mobile { background: #e5f9f2; color: #1aab7c; }
+    .ct-both   { background: #f0eeff; color: #7c74e8; }
+    .client-desc   { font-size: 0.74rem; color: #8a93aa; line-height: 1.5; margin-bottom: 3px; }
+    .client-domain { font-size: 0.68rem; color: #b0b8cc; font-weight: 600; }
+  </style>
+</head>
+<body>
+<div class="card">
+
+  <!-- ══════════ HOME ══════════ -->
+  <div id="home" class="panel active">
+
+    <div class="avatar-wrapper">
+      <div class="avatar-ring">
+        <img class="avatar-img" src="./resource/Minoshi.jpeg" alt="Minoshi"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+        <div class="avatar-placeholder" style="display:none;">MP</div>
+      </div>
+    </div>
+
+    <h1 class="name">Hi, I'm Minoshi Perera </h1>
+    <p class="role">Test Analyst | QA Engineer </p>
+    <div class="intro"> Passionate about software quality, test automation, and delivering high quality applications.</div>
+    <div class="nav-grid">
+
+      <button class="nav-btn edu" onclick="showPanel('education')">
+        <div class="nav-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+            <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+          </svg>
+        </div>
+        <span class="nav-label">Education</span>
+      </button>
+
+      <button class="nav-btn exp" onclick="showPanel('experience')">
+        <div class="nav-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="7" width="20" height="14" rx="2"/>
+            <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>
+            <line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/>
+          </svg>
+        </div>
+        <span class="nav-label">Experience</span>
+      </button>
+
+      <button class="nav-btn proj" onclick="showPanel('projects')">
+        <div class="nav-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>
+          </svg>
+        </div>
+        <span class="nav-label">Projects</span>
+      </button>
+
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="contact-info">
+      <div class="contact-row"> <a href="https://www.linkedin.com/in/minoshiperera/" style="color:inherit;text-decoration:none;"> <i class="fa-brands fa-linkedin"></i> LinkedIn</a></div>
+      <div class="contact-row"> <a href="mailto:chalangani@gmail.com" style="color:inherit;text-decoration:none;"> <i class="fa-solid fa-envelope"></i> chalangani@gmail.com</a></div>
+      <div class="contact-row"> <i class="fa-solid fa-mobile-screen-button"></i> 0225 026 074</div>
+      <div class="contact-row"> <i class="fa-solid fa-map-pin"></i> New Zealand</div>
+    </div>
+
+    <div class="skills-section">
+      <div class="skills-label">Core Skills</div>
+      <div class="tags">
+        <span class="tag">Manual Testing</span>
+        <span class="tag">JIRA</span>
+        <span class="tag">Agile / Scrum</span>
+        <span class="tag">Test Automation</span>
+        <span class="tag">Playwright</span>
+        <span class="tag">Cypress</span>
+        <span class="tag">Testcases</span>
+        <span class="tag">API Testing</span>
+        <span class="tag">SQL</span>
+        <span class="tag">CI/CD</span>
+        <span class="tag">Documentation</span>
+        
+      </div>
+    </div>
+
+  </div><!-- /home -->
+
+
+  <!-- ══════════ EDUCATION ══════════ -->
+  <div id="education" class="panel inner-panel">
+    <div class="panel-top">
+      <button class="back-btn" onclick="showPanel('home')" aria-label="Back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <div class="panel-header-icon ic-edu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/>
+        </svg>
+      </div>
+      <div>
+        <div class="panel-title">Education</div>
+      </div>
+    </div>
+    <div class="panel-body">
+      <div class="edu-list">
+
+        <div class="edu-card">
+          <div class="edu-flag">🇳🇿</div>
+          <div>
+            <div class="edu-degree">Master of Applied Information Technology</div>
+            <div class="edu-school">Waikato Institute of Technology (Wintec)</div>
+            <div class="edu-pills">
+              <span class="pill pill-current">Feb 2025 – June 2026</span>
+              <span class="pill pill-loc">Hamilton, NZ</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="edu-card">
+          <div class="edu-flag">🇬🇧</div>
+          <div>
+            <div class="edu-degree">MBA in Project Management</div>
+            <div class="edu-school">Cardiff Metropolitan University</div>
+            <div class="edu-pills">
+              <span class="pill pill-done">Feb 2022 – Dec 2023</span>
+              <span class="pill pill-loc">United Kingdom</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="edu-card">
+          <div class="edu-flag">🇱🇰</div>
+          <div>
+            <div class="edu-degree">Bachelor of Information Technology</div>
+            <div class="edu-school">University of Colombo School of Computing</div>
+            <div class="edu-pills">
+              <span class="pill pill-done">Graduated Sep 2021</span>
+              <span class="pill pill-loc">Colombo, Sri Lanka</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- <div class="research-box">
+        <div class="research-label">Research Focus</div>
+        <div class="research-item">AI &amp; Software Testing</div>
+        <div class="research-sub">Using LLMs to predict bug-fixing time</div>
+        <div class="research-item" style="margin-top:8px;">Test Automation</div>
+        <div class="research-sub">Playwright-based automation framework</div>
+      </div>-->
+    </div> 
+  </div><!-- /education -->
+
+
+  <!-- ══════════ EXPERIENCE ══════════ -->
+  <div id="experience" class="panel inner-panel">
+    <div class="panel-top">
+      <button class="back-btn" onclick="showPanel('home')" aria-label="Back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <div class="panel-header-icon ic-exp">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="7" width="20" height="14" rx="2"/>
+          <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>
+          <line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/>
+        </svg>
+      </div>
+      <div>
+        <div class="panel-title">Experience</div>
+        <div class="panel-subtitle">7+ years across different domains</div>
+      </div>
+    </div>
+    <div class="panel-body">
+      <div class="job-list">
+
+        <div class="job-card intern">
+          <div class="job-head">
+            <div class="job-title">QA Engineer (Intern & Volunteer) </div>
+            <div class="job-badge b-intern">Construction SaaS</div>
+          </div>
+          <div class="job-meta">📍 Hamilton, NZ &nbsp;·&nbsp; Jul 2025 – Feb 2026</div>
+          <ul class="job-bullets">
+            <li>Developed and implemented a QA process, standardising workflows and reporting.</li>
+            <li>Designed and maintained test cases and test plans using Cypress.</li>
+            <li>Built an automation framework with Cypress, improving testing efficiency.</li>
+          </ul>
+        </div>
+
+        <div class="job-card banking">
+          <div class="job-head">
+            <div class="job-title">Software Tester</div>
+            <span class="job-badge b-banking">Banking</span>
+          </div>
+          <div class="job-meta">📍 Singapore &nbsp;·&nbsp; Dec 2023 – May 2024</div>
+          <ul class="job-bullets">
+            <li>Mobile app testing via BrowserStack and physical devices.</li>
+            <li>Test data creation using SIBS and TAM tools.</li>
+            <li>Performed UAT to ensure alignment with business expectations.</li>
+          </ul>
+        </div>
+
+        <div class="job-card telco">
+          <div class="job-head">
+            <div class="job-title">Senior QA Engineer</div>
+            <span class="job-badge b-telco">Telco</span>
+          </div>
+          <div class="job-meta">📍 Colombo, Sri Lanka &nbsp;·&nbsp; Aug 2020 – Aug 2023</div>
+          <ul class="job-bullets">
+            <li>Improved defect identification by 30% via Agile sprints and Zephyr.</li>
+            <li>Reduced manual testing effort by 25% through scripted regression.</li>
+            <li>Automated regression, cutting bug detection time by 25%.</li>
+          </ul>
+        </div>
+
+        <div class="job-card b2b">
+          <div class="job-head">
+            <div class="job-title">QA Engineer </div>
+            <span class="job-badge b-b2b">B2B Sales Platform</span>
+          </div>
+          <div class="job-meta">📍 Colombo, Sri Lanka &nbsp;·&nbsp; Sep 2016 – Aug 2020</div>
+          <ul class="job-bullets">
+            <li>Aligned testing activities with project goals across dev and business teams.</li>
+            <li>Coordinated with DevOps for environment readiness and on-time releases.</li>
+            <li>Contributed to a 30% decrease in production defects.</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </div><!-- /experience -->
+
+
+  <!-- ══════════ PROJECTS ══════════ -->
+  <div id="projects" class="panel inner-panel">
+    <div class="panel-top">
+      <button class="back-btn" onclick="showPanel('home')" aria-label="Back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <div class="panel-header-icon ic-proj">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>
+        </svg>
+      </div>
+      <div>
+        <div class="panel-title">Projects</div>
+        <div class="panel-subtitle">Research, automation &amp; client work</div>
+      </div>
+    </div>
+    <div class="panel-body">
+
+      <div class="proj-section-label">Master's Research Project</div>
+
+      <div class="proj-card purple">
+        <div class="proj-icon pi-purple">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+          </svg>
+        </div>
+        <div>
+          <div class="proj-title">LLMs for Bug-Fix Prediction</div>
+          <div class="proj-desc">Conducted an empirical comparison of Qwen 2.5 and Llama 3 to evaluate their effectiveness in predicting software bug-fixing time using open-source large language models.</div>
+          <div class="proj-tags"><span class="ptag">LLMs</span><span class="ptag">Ollama</span><span class="ptag">Prompting</span><span class="ptag">Thresholds</span><span class="ptag"></span></div>
+        </div>
+      </div>
+
+      <div class="proj-section-label">Master's Automation Projects</div>
+
+      <div class="proj-card">
+        <div class="proj-icon pi-blue">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>
+          </svg>
+        </div>
+        <div>
+          <div class="proj-title">Playwright Automation Framework</div>
+          <div class="proj-desc">Developed an end-to-end Playwright automation framework as part of my Master's coursework, covering UI regression and cross-browser testing.</div>
+          <div class="proj-tags"><span class="ptag">Playwright</span><span class="ptag">JavaScript</span><span class="ptag">UI</span><span class="ptag">Regression</span></div>
+        </div>
+      </div>
+
+      <div class="proj-card green">
+        <div class="proj-icon pi-green">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/>
+          </svg>
+        </div>
+        <div>
+          <div class="proj-title">Cypress Automation Framework</div>
+          <div class="proj-desc">Developed a Cypress automation framework from scratch during my internship, introducing standardized QA processes and test documentation.</div>
+          <div class="proj-tags"><span class="ptag">Cypress</span><span class="ptag">JavaScript</span><span class="ptag">UAT</span><span class="ptag">Web</span></div>
+        </div>
+      </div>
+
+      <div class="proj-section-label">Client Projects</div>
+
+      <div class="client-grid">
+        <div class="client-card">
+          <div class="client-type-row"><div class="client-name">OCBC Banking</div><span class="client-type ct-both">Web+Mobile</span></div>
+          <div class="client-desc">MicroFrontend migration testing.</div>
+          <div class="client-domain">Banking · Singapore</div>
+        </div>
+        <div class="client-card">
+          <div class="client-type-row"><div class="client-name">My Dialog App</div><span class="client-type ct-both">Web+Mobile</span></div>
+          <div class="client-desc">Self-care app for payments &amp; balances.</div>
+          <div class="client-domain">Telco · Sri Lanka</div>
+        </div>
+        <div class="client-card">
+          <div class="client-type-row"><div class="client-name">Dialog Retailer</div><span class="client-type ct-mobile">Mobile</span></div>
+          <div class="client-desc">Customer onboarding for retailers.</div>
+          <div class="client-domain">Telco · Sri Lanka</div>
+        </div>
+        <div class="client-card">
+          <div class="client-type-row"><div class="client-name">FusionGrove B2B</div><span class="client-type ct-web">Web</span></div>
+          <div class="client-desc">B2B revenue growth platform.</div>
+          <div class="client-domain">Sales · Sri Lanka</div>
+        </div>
+        <div class="client-card">
+          <div class="client-type-row"><div class="client-name">Muve Taxi</div><span class="client-type ct-mobile">Mobile</span></div>
+          <div class="client-desc">Ride-hailing app regression testing.</div>
+          <div class="client-domain">Transport · Sri Lanka</div>
+        </div>
+        <div class="client-card">
+          <div class="client-type-row"><div class="client-name">Singapore Cricket Club</div><span class="client-type ct-mobile">Mobile</span></div>
+          <div class="client-desc">SaaS loyalty program for SCC members.</div>
+          <div class="client-domain">Loyalty · Singapore</div>
+        </div>
+      </div>
+
+    </div>
+  </div><!-- /projects -->
+
+</div><!-- /card -->
+
+<script>
+  function showPanel(id) {
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    if (id !== 'home') {
+      document.getElementById(id).querySelector('.panel-body').scrollTop = 0;
+    }
+  }
+</script>
+</body>
+</html>
